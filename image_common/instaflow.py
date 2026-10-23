@@ -127,19 +127,23 @@ class InstaFlowModel(nn.Module):
         return x_1
 
     def save(self, file_path):
-        hparams = {
-            "network": self.network,
+        dic = {
+            "hparams": {"network": self.network},
+            "state_dict": self.network.state_dict(),
         }
-        state_dict = self.state_dict()
-
-        dic = {"hparams": hparams, "state_dict": state_dict}
         torch.save(dic, file_path)
+
 
     def load(self, file_path):
         dic = torch.load(file_path, map_location="cpu")
-        hparams = dic["hparams"]
+        self.network = dic["hparams"]["network"]
         state_dict = dic["state_dict"]
 
-        self.network = hparams["network"]
+        if any(key.startswith("network.") for key in state_dict):
+            state_dict = {
+                key[len("network."):]: value
+                for key, value in state_dict.items()
+                if key.startswith("network.")
+            }
 
-        self.load_state_dict(state_dict)
+        self.network.load_state_dict(state_dict)

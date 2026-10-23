@@ -1,7 +1,7 @@
 <div align="center">
   <h1>Flow Matching</h1>
   <p>
-    <b>NYCU: Image and Video Generation (2025 Fall)</b><br>
+    <b>NYCU: Image and Video Generation (2026 Fall)</b><br>
     Programming Assignment 4
   </p>
 </div>
@@ -9,7 +9,8 @@
 <div align="center">
   <p>
     Instructor: <b>Yu-Lun Liu</b><br>
-    TAs: <b>Jie-Ying Lee</b>, <b>Ying-Huan Chen</b>
+    TA: <b>Po-Fan Yu</b><br>
+    Assignment Design: <b>Jie-Ying Lee</b>, <b>Ying-Huan Chen</b>
   </p>
 </div>
 
@@ -59,6 +60,8 @@ This assignment explores **Flow Matching** and its applications in generative mo
 
 ### Installation
 ```bash
+conda create -n lab4-flow-matching python=3.10 -y
+conda activate lab4-flow-matching
 pip install -r requirements.txt
 ```
 
@@ -477,7 +480,7 @@ Create `{STUDENT_ID}_lab4.zip` with the following structure:
 
 ### Submission Details
 
-- **Deadline**: 2025/11/20 (Thu.) 23:59
+- **Deadline**: 2026/11/12 (Thu.) 23:59
 - **Platform**: E3
 - **Late Policy**: No late submissions accepted
 

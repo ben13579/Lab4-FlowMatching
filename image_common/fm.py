@@ -155,13 +155,18 @@ class FlowMatching(nn.Module):
         class_label: Optional[torch.Tensor] = None,
         guidance_scale: Optional[float] = 1.0,
         verbose=False,
+        x0: Optional[torch.Tensor] = None,
     ):
         """
         Inference sampling loop for the multi-step "teacher" model.
         """
         batch_size = shape[0]
         # Start from pure noise (x_0 at t=0)
-        x_T = torch.randn(shape).to(self.device)
+        if x0 is not None:
+            assert tuple(x0.shape) == tuple(shape)
+            x_T = x0.to(self.device).clone()
+        else:
+            x_T = torch.randn(shape).to(self.device)
         do_classifier_free_guidance = guidance_scale > 1.0
 
         if do_classifier_free_guidance:
@@ -194,7 +199,9 @@ class FlowMatching(nn.Module):
             # 2. Predict the velocity (vt) at the current time t
             #    - If using CFG (do_classifier_free_guidance is True):
             #      a) Get conditional prediction: v_cond = self.network(xt, t, class_label=class_label)
-            #      b) Get unconditional prediction: v_uncond = self.network(xt, t, class_label=None)
+            #      b) Get unconditional prediction using label 0 (the null class):
+            #           null_labels = torch.zeros_like(class_label)
+            #           v_uncond = self.network(xt, t, class_label=null_labels)
             #      c) Combine using CFG formula: vt = v_uncond + guidance_scale * (v_cond - v_uncond)
             #    - Otherwise:
             #      d) Just get standard prediction: vt = self.network(xt, t, class_label=class_label)

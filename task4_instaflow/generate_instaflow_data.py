@@ -77,7 +77,8 @@ def main(args):
             class_label=labels,
             guidance_scale=args.cfg_scale,
             num_inference_timesteps=args.num_inference_steps,
-            verbose=False
+            verbose=False,
+            x0=x_0
         )
 
         # Save the pairs to disk
